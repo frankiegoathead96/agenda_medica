@@ -4,11 +4,11 @@
 // 6 patients per hour, every 10 minutes = 18 slots per day
 
 export const SCHEDULE = {
-  1: { start: 16, hours: 3, label: "Lunedì" },
-  2: { start:  8, hours: 3, label: "Martedì" },
-  3: { start:  8, hours: 3, label: "Mercoledì" },
-  4: { start:  8, hours: 3, label: "Giovedì" },
-  5: { start: 16, hours: 3, label: "Venerdì" },
+  1: { start: 16, hours: 3, label: "Lunedì" },    // Monday 16-19
+  2: { start:  8, hours: 3, label: "Martedì" },   // Tuesday 8-11
+  3: { start:  8, hours: 3, label: "Mercoledì" }, // Wednesday 8-11
+  4: { start:  8, hours: 3, label: "Giovedì" },   // Thursday 8-11
+  5: { start: 16, hours: 3, label: "Venerdì" },   // Friday 16-19
 };
 
 export const MONTH_NAMES = [
@@ -51,7 +51,8 @@ export function getNext14Workdays() {
 }
 
 export function fmtFull(s) {
-  return new Date(s + "T12:00:00").toLocaleDateString("it-IT", {
+  const d = new Date(s + "T12:00:00");
+  return d.toLocaleDateString("it-IT", {
     weekday: "long", day: "numeric", month: "long"
   });
 }
