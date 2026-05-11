@@ -7,7 +7,6 @@ import {
   toggleSession, togglePatient, importPatients,
 } from "./db";
 
-// ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const C = {
   purple: "167,139,250",
   cyan:   "103,232,249",
@@ -15,7 +14,6 @@ const C = {
   red:    "239,68,68",
 };
 
-// ─── GLASS ────────────────────────────────────────────────────────────────────
 function Glass({ children, style, onClick, radius=20, padding, variant="base", hue }) {
   const v = {
     base:   { bg:"rgba(255,255,255,0.09)", border:"rgba(255,255,255,0.17)", spec:"rgba(255,255,255,0.5)"  },
@@ -133,7 +131,6 @@ function Btn({ children, onClick, variant="primary", loading, disabled, style })
   );
 }
 
-// ─── MINI CALENDAR ────────────────────────────────────────────────────────────
 function MiniCalendar({ sessions, onSelectDate, selectedDate }) {
   const today = new Date();
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -143,9 +140,9 @@ function MiniCalendar({ sessions, onSelectDate, selectedDate }) {
   const fullDates      = new Set(sessions.filter(s=>s.attiva&&s.bookedSlots.length>=s.allSlots.length).map(s=>s.data));
   const todayStr       = today.toISOString().split("T")[0];
 
-  const firstDay   = new Date(viewYear, viewMonth, 1).getDay();
+  const firstDay    = new Date(viewYear, viewMonth, 1).getDay();
   const daysInMonth = new Date(viewYear, viewMonth+1, 0).getDate();
-  const offset     = firstDay===0?6:firstDay-1;
+  const offset      = firstDay===0?6:firstDay-1;
 
   const cells = [];
   for (let i=0;i<offset;i++) cells.push(null);
@@ -181,7 +178,6 @@ function MiniCalendar({ sessions, onSelectDate, selectedDate }) {
             const isPast  = dateStr<todayStr;
             const isToday = dateStr===todayStr;
             const clickable = isAvail&&!isPast;
-
             return (
               <div key={i} onClick={clickable?()=>onSelectDate(dateStr):undefined} style={{
                 textAlign:"center", padding:"7px 0", borderRadius:10,
@@ -218,7 +214,6 @@ function MiniCalendar({ sessions, onSelectDate, selectedDate }) {
   );
 }
 
-// ─── VERIFICA ─────────────────────────────────────────────────────────────────
 function VerificaView({ onSuccess, showToast }) {
   const [mode, setMode]   = useState("cf");
   const [cf, setCf]       = useState("");
@@ -254,7 +249,6 @@ function VerificaView({ onSuccess, showToast }) {
         </p>
       </div>
 
-      {/* Segmented control */}
       <div style={{display:"flex",background:"rgba(255,255,255,0.06)",borderRadius:12,padding:3,border:"1px solid rgba(255,255,255,0.09)"}}>
         {[["cf","Codice Fiscale"],["nome","Nome e Data"]].map(([k,l])=>(
           <div key={k} onClick={()=>setMode(k)} style={{
@@ -287,15 +281,13 @@ function VerificaView({ onSuccess, showToast }) {
         </div>
       </Glass>
 
-      <p style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,0.2)",lineHeight:1.7}}>
-        L'accesso è riservato ai pazienti registrati presso lo studio.<br/>
-        Per informazioni: <span style={{color:"rgba(255,255,255,0.4)"}}>350 526 4489</span>
+      <p style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,0.2)"}}>
+        L'accesso è riservato ai pazienti registrati presso lo studio.
       </p>
     </div>
   );
 }
 
-// ─── SESSIONI VIEW ────────────────────────────────────────────────────────────
 function SessioniView({ paziente, onLogout, showToast }) {
   const [sessions, setSessions] = useState([]);
   const [myBooking, setMyBooking] = useState(null);
@@ -381,7 +373,6 @@ function SessioniView({ paziente, onLogout, showToast }) {
     </div>
   );
 
-  // ── Existing booking view ──
   if (myBooking) return (
     <div style={{display:"flex",flexDirection:"column",gap:16,animation:"fadeIn 0.3s ease"}}>
       <Glass variant="base" radius={18} padding="13px 16px">
@@ -401,10 +392,6 @@ function SessioniView({ paziente, onLogout, showToast }) {
           <div style={{fontSize:18,fontWeight:700,color:"#fff",textTransform:"capitalize",marginBottom:4}}>{fmtFull(myBooking.data)}</div>
           <div style={{fontSize:38,fontWeight:800,color:"#fff",letterSpacing:1,marginBottom:20}}>{myBooking.ora}</div>
           <div style={{height:1,background:"rgba(255,255,255,0.08)",marginBottom:14}}/>
-          <div style={{fontSize:12,color:"rgba(255,255,255,0.42)",lineHeight:1.7}}>
-            Presentarsi qualche minuto prima con un documento d'identità.<br/>
-            Per disdette: <span style={{color:"rgba(255,255,255,0.65)"}}>350 526 4489</span>
-          </div>
           <div style={{marginTop:12,padding:"7px 11px",background:"rgba(0,0,0,0.15)",borderRadius:8,fontSize:10,color:"rgba(255,255,255,0.28)",fontFamily:"monospace",letterSpacing:0.5}}>
             {myBooking.id}
           </div>
@@ -429,7 +416,6 @@ function SessioniView({ paziente, onLogout, showToast }) {
     </div>
   );
 
-  // ── Booking flow ──
   return (
     <div style={{display:"flex",flexDirection:"column",gap:16,animation:"fadeIn 0.3s ease"}}>
       <Glass variant="base" radius={18} padding="13px 16px">
@@ -545,7 +531,6 @@ function SessioniView({ paziente, onLogout, showToast }) {
   );
 }
 
-// ─── ADMIN LOGIN ──────────────────────────────────────────────────────────────
 function AdminLoginView({ onLogin, onBack, showToast }) {
   const [pw, setPw]         = useState("");
   const [loading, setLoading] = useState(false);
@@ -580,7 +565,6 @@ function AdminLoginView({ onLogin, onBack, showToast }) {
   );
 }
 
-// ─── ADMIN PANEL ──────────────────────────────────────────────────────────────
 function AdminView({ onLogout, showToast }) {
   const [tab, setTab]           = useState("agenda");
   const [sessions, setSessions] = useState([]);
@@ -637,8 +621,6 @@ function AdminView({ onLogout, showToast }) {
     if (!file) return;
     setImporting(true);
     try {
-      // Parse xlsx using FileReader + manual CSV fallback
-      // For xlsx: use SheetJS via CDN — loaded dynamically
       const XLSX = await import("https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs");
       const buf = await file.arrayBuffer();
       const wb = XLSX.read(buf, { type:"array", cellDates:true });
@@ -697,7 +679,6 @@ function AdminView({ onLogout, showToast }) {
         <div onClick={onLogout} style={{fontSize:12,color:"rgba(255,255,255,0.32)",cursor:"pointer",padding:"4px 8px"}}>Esci</div>
       </div>
 
-      {/* Stats */}
       <div style={{display:"flex",gap:8}}>
         {[
           {l:"Sessioni",    v:upcoming.length,  c:C.purple},
@@ -711,7 +692,6 @@ function AdminView({ onLogout, showToast }) {
         ))}
       </div>
 
-      {/* Tabs */}
       <div style={{display:"flex",background:"rgba(255,255,255,0.06)",borderRadius:12,padding:3,border:"1px solid rgba(255,255,255,0.08)"}}>
         {[["agenda","Agenda"],["prenotazioni","Prenotazioni"],["sessioni","Sessioni"],["pazienti","Pazienti"]].map(([k,l])=>(
           <div key={k} onClick={()=>{setTab(k);setSearch("");}} style={{
@@ -723,7 +703,6 @@ function AdminView({ onLogout, showToast }) {
         ))}
       </div>
 
-      {/* AGENDA */}
       {tab==="agenda" && (
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
           {upcoming.length===0
@@ -777,13 +756,10 @@ function AdminView({ onLogout, showToast }) {
         </div>
       )}
 
-      {/* PRENOTAZIONI */}
       {tab==="prenotazioni" && (
         <Glass variant="base" radius={18}>
           <div style={{padding:"14px"}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
-              <Label>{bookings.length} prenotazioni attive</Label>
-            </div>
+            <Label style={{marginBottom:12}}>{bookings.length} prenotazioni attive</Label>
             <input style={{...inp,marginBottom:12}} placeholder="Cerca nome, codice fiscale, orario..."
               value={search} onChange={e=>setSearch(e.target.value)}/>
             {filteredBookings.length===0
@@ -807,7 +783,6 @@ function AdminView({ onLogout, showToast }) {
         </Glass>
       )}
 
-      {/* SESSIONI */}
       {tab==="sessioni" && (
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           <Glass variant="dark" radius={14} padding="12px 14px"
@@ -853,10 +828,8 @@ function AdminView({ onLogout, showToast }) {
         </div>
       )}
 
-      {/* PAZIENTI */}
       {tab==="pazienti" && (
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          {/* Import */}
           <Glass variant="dark" radius={16} padding="14px 16px"
             style={{borderLeft:`3px solid rgba(${C.purple},0.4)`}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.42)",marginBottom:10,lineHeight:1.6}}>
@@ -875,9 +848,7 @@ function AdminView({ onLogout, showToast }) {
 
           <Glass variant="base" radius={18}>
             <div style={{padding:"14px"}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
-                <Label>{patients.length} pazienti registrati</Label>
-              </div>
+              <Label style={{marginBottom:12}}>{patients.length} pazienti registrati</Label>
               <input style={{...inp,marginBottom:12}} placeholder="Cerca nome o codice fiscale..."
                 value={search} onChange={e=>setSearch(e.target.value)}/>
               <div style={{maxHeight:380,overflowY:"auto"}}>
@@ -912,11 +883,10 @@ function AdminView({ onLogout, showToast }) {
   );
 }
 
-// ─── ROOT ─────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [view, setView]       = useState("verifica");
+  const [view, setView]         = useState("verifica");
   const [paziente, setPaziente] = useState(null);
-  const [toast, setToast]     = useState({ msg:"", ok:true, visible:false });
+  const [toast, setToast]       = useState({ msg:"", ok:true, visible:false });
 
   const showToast = useCallback((msg, ok=true) => {
     setToast({ msg, ok, visible:true });
@@ -941,14 +911,12 @@ export default function App() {
         button { font-family:inherit; }
       `}</style>
 
-      {/* Background */}
       <div style={{position:"fixed",inset:0,zIndex:0,overflow:"hidden",pointerEvents:"none"}}>
         <div style={{position:"absolute",width:"65vw",height:"65vw",maxWidth:420,maxHeight:420,borderRadius:"50%",top:"-10%",left:"-14%",background:"radial-gradient(circle,rgba(109,40,217,0.3) 0%,transparent 70%)"}}/>
         <div style={{position:"absolute",width:"55vw",height:"55vw",maxWidth:360,maxHeight:360,borderRadius:"50%",bottom:"-8%",right:"-10%",background:"radial-gradient(circle,rgba(6,182,212,0.22) 0%,transparent 70%)"}}/>
       </div>
 
       <div style={{position:"relative",zIndex:10,maxWidth:480,margin:"0 auto",padding:"24px 18px 90px",minHeight:"100vh"}}>
-        {/* Top bar */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:28,paddingTop:4}}>
           <div style={{fontSize:13,fontWeight:500,color:"rgba(255,255,255,0.38)",letterSpacing:0.3}}>
             Studio Medico
